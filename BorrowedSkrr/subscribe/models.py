@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import Empolyee
+from accounts.models import Empolyee, Student
 
 # Create your models here.
 class Product(models.Model):
@@ -47,6 +47,25 @@ class Subscribe(models.Model):
     startDate = models.DateField(auto_now_add=True)
     endDate = models.DateField()
     price = models.PositiveIntegerField(default=0)
+    likes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.empolyee_id.name
+    
+class Management(models.Model):
+    empolyee_id = models.ForeignKey(Empolyee, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    requestDate = models.DateField(auto_now_add=True)
+
+class Reservation(models.Model):
+    empolyee_id = models.ForeignKey(Empolyee, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subscribe_id = models.ForeignKey(Subscribe, on_delete=models.CASCADE, null=True)
+    count = models.PositiveIntegerField(default=0)
+    startDate = models.DateField(auto_now_add=True)
+    endDate = models.DateField()
+    reason = models.TextField(max_length=1000)
+
+class StudentWishList(models.Model):
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    subscribe_id = models.ForeignKey(Subscribe, on_delete=models.CASCADE)
