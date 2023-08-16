@@ -32,7 +32,7 @@ class ShoppingAdmin(admin.ModelAdmin):
 admin.site.register(Shopping, ShoppingAdmin)
 
 class SubscribeAdmin(admin.ModelAdmin):
-    list_display = ('get_EmpolyeeSchool', 'get_productName', 'count', 'startDate', 'endDate')
+    list_display = ('get_EmpolyeeSchool', 'get_productName', 'count', 'startDate', 'endDate', 'isAllowed')
     list_filter = ['empolyee_id', 'product_id']
 
     def get_EmpolyeeSchool(self, obj):

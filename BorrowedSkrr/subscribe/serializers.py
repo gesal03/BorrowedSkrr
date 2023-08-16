@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Shopping
+from .models import Product, Subscribe
 
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,8 +12,8 @@ class ProductRetrieveUpdateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ShoppingSerializer(serializers.ModelSerializer):
+class SubscribeSerializer(serializers.ModelSerializer):
     # date = serializers.IntegerField()
     class Meta:
-        model = Shopping
+        model = Subscribe
         fields = '__all__'

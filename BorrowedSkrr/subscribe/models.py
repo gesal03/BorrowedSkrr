@@ -48,7 +48,8 @@ class Subscribe(models.Model):
     endDate = models.DateField()
     price = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
-
+    isAllowed = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.empolyee_id.name
     
