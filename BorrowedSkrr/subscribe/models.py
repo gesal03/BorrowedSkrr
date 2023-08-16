@@ -49,7 +49,7 @@ class Subscribe(models.Model):
     price = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
     isAllowed = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.empolyee_id.name
     
@@ -57,6 +57,7 @@ class Management(models.Model):
     empolyee_id = models.ForeignKey(Empolyee, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     requestDate = models.DateField(auto_now_add=True)
+    isAllowed = models.BooleanField(default=False)
 
 class Reservation(models.Model):
     empolyee_id = models.ForeignKey(Empolyee, on_delete=models.CASCADE)

@@ -1,19 +1,29 @@
 from rest_framework import serializers
-from .models import Product, Subscribe
+from .models import Product, Subscribe, Management, Reservation, EmpolyeeWishList
 
-class ProductListSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__' 
 
-class ProductRetrieveUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-
 
 class SubscribeSerializer(serializers.ModelSerializer):
-    # date = serializers.IntegerField()
+    product = ProductSerializer(source='product_id', read_only=True)
     class Meta:
         model = Subscribe
+        fields = '__all__'
+
+class ManagementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Management
+        fields = '__all__'
+
+class ReservationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = '__all__'
+
+class EmpolyeeWishListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmpolyeeWishList
         fields = '__all__'

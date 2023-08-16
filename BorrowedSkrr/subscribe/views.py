@@ -1,13 +1,14 @@
-from rest_framework import generics
-from .models import Product, Shopping, Subscribe, EmpolyeeWishList
-from .serializers import ProductListSerializer, ProductRetrieveUpdateSerializer, SubscribeSerializer
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, status
+from .models import Product, Shopping, Subscribe, EmpolyeeWishList, Management, Reservation
+from .serializers import ProductSerializer, SubscribeSerializer, ManagementSerializer, ReservationSerializer, EmpolyeeWishListSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 # 제품 목록 보여주기, 카테고리 기능
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductListSerializer
+    serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -38,7 +39,7 @@ class ProductListAPIView(generics.ListAPIView):
 # get: 상품 상세 정보, patch: 좋아요 기능(likes 증가, EmpolyeeWishList 추가)
 class ProductRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
-    serializer_class = ProductRetrieveUpdateSerializer
+    serializer_class = ProductSerializer
     # permission_classes = [IsAuthenticated]
 
     # 좋아요
@@ -52,35 +53,69 @@ class ProductRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
             serializer.save()  # Save the updated instance
             return Response(serializer.data)
 
-# 장바구니 목록 보여주기(isAllowed=False), 장바구니 추가
-class SubscribeListCreateAPIView(generics.ListCreateAPIView):
+# 장바구니 추가
+class SubscribeCreateAPIView(generics.CreateAPIView):
+    queryset = Subscribe.objects.all()
     serializer_class = SubscribeSerializer
 
-    # 장바구니 목록 보여주기
-    def get_queryset(self):
-        user_id = self.request.user.id
-        query = Subscribe.objects.filter(empolyee_id=user_id, isAllowed=False)
-        return query
+    # # 장바구니 목록 보여주기
+    # def get_queryset(self):
+    #     user_id = self.request.user.id
+    #     query = Subscribe.objects.filter(empolyee_id=user_id, isAllowed=False)
+    #     return query
 
-# 결제하기
+# 장바구니 목록 보여주기(isAllowed=False), 결제하기
 class SubscribeUpdateAPIView(generics.UpdateAPIView, generics.ListAPIView):
     serializer_class = SubscribeSerializer
 
-    def patch(self, request, *args, **kwargs):
-        # Get the queryset
-        queryset = Subscribe.objects.filter(empolyee_id=request.user.id, isAllowed=False)
+    def update(self, request, *args, **kwargs):
+        filtered_subscribes = Subscribe.objects.filter(isAllowed=False)  # Filter objects with isAllowed=False
+        
+        for subscribe in filtered_subscribes:
+            subscribe.isAllowed = True
+            subscribe.save()
 
-        for subscribe_obj in queryset:
-            subscribe_obj.isAllowed = True
-            subscribe_obj.save()
-
-        return Response(self.get_serializer(queryset, many=True).data)
+        return Response(status=status.HTTP_200_OK)
     
+    # # 장바구니 목록 보여주기
     def get_queryset(self):
         queryset = Subscribe.objects.filter(empolyee_id=self.request.user.id, isAllowed=False)
-        serializer = self.serializer_class(queryset, many=True)
         return queryset
 
-class SubscribeCreateAPIView(generics.CreateAPIView):
-    queryset = Subscribe.objects.all()
-    # serializer_class = 
+
+# 마이페이지 메인 화면
+# 교사 정보 포함 해야됨 - 서영이 코드 받아서 넣기!
+class MyPageListAPIView(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+
+        managementList = Management.objects.filter(empolyee_id = self.request.user.id, isAllowed=False)
+        reservationList = Reservation.objects.filter(empolyee_id = self.request.user.id)
+
+        managementSerializer = ManagementSerializer(managementList, many=True)
+        reservationSerializer = ReservationSerializer(reservationList, many=True)
+
+        content = {
+            "management": managementSerializer.data,
+            "reservation": reservationSerializer.data
+        }
+
+        return Response(content)
+
+# 학교 위시 리스트 출력
+class EmpolyeeWishListAPIView(generics.ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        wishListQueryset = EmpolyeeWishList.objects.filter(empolyee_id = self.request.user.id)
+        queryset=[]
+        for item in wishListQueryset:
+            obj = get_object_or_404(Product, id=item.product_id.id)
+            queryset.append(obj)
+        return queryset
+
+class AllowedSubscribeListAPIView(generics.ListAPIView):
+    serializer_class = SubscribeSerializer
+
+    def get_queryset(self):
+        queryset = Subscribe.objects.filter(empolyee_id=self.request.user.id, isAllowed=True)
+        return queryset
