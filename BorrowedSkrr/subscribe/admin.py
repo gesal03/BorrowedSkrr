@@ -3,7 +3,7 @@ from .models import EmpolyeeWishList, Shopping, Subscribe, Product, Management, 
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'count', 'likes', 'categroy')
+    list_display = ('id', 'name', 'count', 'likes', 'category')
 
 admin.site.register(Product, ProductAdmin)
 

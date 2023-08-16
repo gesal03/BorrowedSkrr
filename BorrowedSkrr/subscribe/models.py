@@ -16,7 +16,7 @@ class Product(models.Model):
     priceWeek = models.PositiveIntegerField(default=0)
     priceMonth = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
-    categroy = models.CharField(max_length=30, choices=CATEGROY_CHOICES, default="1")
+    category = models.CharField(max_length=30, choices=CATEGROY_CHOICES, default="1")
 
     def __str__(self):
         return self.name
