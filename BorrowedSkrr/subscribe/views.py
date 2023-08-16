@@ -1,9 +1,9 @@
 from rest_framework import generics
-from .models import Product
-from .serializers import ProductListSerializer, ProductRetrieveUpdateSerializer
+from .models import Product, Shopping
+from .serializers import ProductListSerializer, ProductRetrieveUpdateSerializer, ShoppingSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
+
 
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
@@ -49,3 +49,7 @@ class ProductRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
             serializer.save()  # Save the updated instance
             return Response(serializer.data)
         
+class ShoppingCreateAPIView(generics.CreateAPIView):
+    queryset = Shopping.objects.all()
+    serializer_class = ShoppingSerializer
+
