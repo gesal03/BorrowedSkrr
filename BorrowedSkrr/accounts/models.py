@@ -1,10 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+import random
+import string
+
+n=10	# 문자의 개수(문자열의 크기)
+rand_str = ""	# 문자열
+
+for i in range(n):
+    rand_str += str(random.choice(string.ascii_letters + string.digits))
 
 class UserManager(BaseUserManager):
     # employee 생성
-    def create_empolyee(self, name, username, password=None, password2=None, school=None, certificate=None, classNumber=None, number=None):
+    def create_empolyee(self, name, username, password=None, password2=None, school=None, certificate=None, classNumber=None, number=None, schoolCode=None):
         if not name:
             raise ValueError('must have user name')
         if not username:
@@ -21,7 +29,9 @@ class UserManager(BaseUserManager):
             password = password,
             password2 = password2,
             school = school,
-            certificate = certificate
+            certificate = certificate,
+            schoolCode = rand_str
+
         )
         empolyee.password = make_password(password)
         empolyee.save(using=self._db)
@@ -51,7 +61,7 @@ class UserManager(BaseUserManager):
             subscribeCode = subscribeCode,
             grade = grade,
             classNumber = classNumber,
-            number = number
+            number = number,
         )
         student.password = make_password(password)
         student.save(using=self._db)
