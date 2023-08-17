@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
-from django.shortcuts import render
-from .serializers import EmpolyeeSerializer, StudentSerializer
+from django.shortcuts import get_object_or_404, render
+from .serializers import EmpolyeeSerializer, StudentSerializer, StudentInfoSerializer, EmployeeInfoSerializer
 from .models import Empolyee, Student
 from rest_framework import generics
 
@@ -33,3 +33,24 @@ def login_view(request):
         return Response({'token': token.key})
     else:
         return Response(status=401)
+
+
+class StudentInfoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Student.objects.all()
+    serializer_class = StudentInfoSerializer
+
+    # def get_queryset(self):
+    #     student_id = self.request.user.id
+    #     queryset = get_object_or_404(Student, id=student_id)
+
+    #     return queryset
+
+class EmployeeInfoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Empolyee.objects.all()
+    serializer_class = EmployeeInfoSerializer
+
+    # def get_queryset(self):
+    #     employee_id = self.request.user.id
+    #     queryset = get_object_or_404(Empolyee, id=employee_id)
+
+    #     return queryset

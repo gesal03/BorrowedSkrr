@@ -34,3 +34,13 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ['name', 'username', 'password', 'password2', 'subscribeCode', 'grade', 'classNumber', 'number']
 
+
+class StudentInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = '__all__'
+        
+class EmployeeInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Empolyee
+        fields = '__all__'
