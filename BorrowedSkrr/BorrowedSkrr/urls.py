@@ -1,6 +1,8 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from subscribe.views import ProductListAPIView, ProductRetrieveUpdateAPIView, SubscribeCreateAPIView,SubscribeUpdateAPIView,MyPageListAPIView, EmpolyeeWishListAPIView,AllowedSubscribeListAPIView, manageStudentAPIView, StudentSubscribeListAPIView, SubscribeRetrieveUpdateAPIView, ReservationCreateAPIView, StudentWishListAPIView, ReservationListAPIView
+from accounts.views import login_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # 제품 List
@@ -31,5 +33,7 @@ urlpatterns = [
     path('student/studentWishList', StudentWishListAPIView.as_view()),
     # 학생 마이페이지 - 예약 내역
     path('student/reservationList', ReservationListAPIView.as_view()),
+
+    path('accounts/', include('accounts.urls')),
     
 ]
