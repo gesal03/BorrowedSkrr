@@ -51,7 +51,7 @@ class Subscribe(models.Model):
     isAllowed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.empolyee_id.name
+        return self.product_id.name
     
 class Management(models.Model):
     empolyee_id = models.ForeignKey(Empolyee, on_delete=models.CASCADE)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Product, Subscribe, Management, Reservation, EmpolyeeWishList
+from accounts.serializers import StudentSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,6 +15,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ManagementSerializer(serializers.ModelSerializer):
+    student = StudentSerializer(source='student_id')
     class Meta:
         model = Management
         fields = '__all__'
