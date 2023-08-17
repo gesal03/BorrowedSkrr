@@ -50,7 +50,7 @@ class ProductRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         instance = self.get_object()  # Get the instance you want to update
         instance.likes += 1
         serializer = self.get_serializer(instance, data=request.data, partial=True)
-        EmpolyeeWishList(empolyee_id=self.request.user.id, product_id=instance)
+        EmpolyeeWishList(empolyee_id=self.request.user.empolyee.id, product_id=instance)
 
         if serializer.is_valid():
             serializer.save()  # Save the updated instance

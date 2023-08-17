@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
 from subscribe.views import ProductListAPIView, ProductRetrieveUpdateAPIView, SubscribeCreateAPIView,SubscribeUpdateAPIView,MyPageListAPIView, EmpolyeeWishListAPIView,AllowedSubscribeListAPIView, manageStudentAPIView, StudentSubscribeListAPIView, SubscribeRetrieveUpdateAPIView, ReservationCreateAPIView, StudentWishListAPIView, ReservationListAPIView
-from accounts.views import login_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
