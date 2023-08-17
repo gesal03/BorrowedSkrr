@@ -5,10 +5,9 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404, render
-from .serializers import EmpolyeeSerializer, StudentSerializer, StudentInfoSerializer, EmployeeInfoSerializer
+from .serializers import LoginSerializer, EmpolyeeSerializer, StudentSerializer, StudentInfoSerializer, EmployeeInfoSerializer
 from .models import Empolyee, Student
-from rest_framework import generics
-
+from rest_framework import generics, status
 
 
 # 교직원 회원가입
@@ -54,3 +53,4 @@ class EmployeeInfoRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPI
     #     queryset = get_object_or_404(Empolyee, id=employee_id)
 
     #     return queryset
+

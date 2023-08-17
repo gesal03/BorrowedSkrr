@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.auth.hashers import make_password
 import random
 import string
@@ -11,6 +11,26 @@ for i in range(n):
     rand_str += str(random.choice(string.ascii_letters + string.digits))
 
 class UserManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError("The Username field must be set")
+        
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_admin', True)
+        extra_fields.setdefault('is_superuser', True)
+        
+        if extra_fields.get('is_admin') is not True:
+            raise ValueError("Superuser must have is_admin=True.")
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
+        
+        return self.create_user(username, password, **extra_fields)
+
     # employee 생성
     def create_empolyee(self, name, username, password=None, password2=None, school=None, certificate=None, classNumber=None, number=None, schoolCode=None):
         if not name:
@@ -33,7 +53,8 @@ class UserManager(BaseUserManager):
             schoolCode = rand_str
 
         )
-        empolyee.password = make_password(password)
+        # empolyee.password = make_password(password)
+        empolyee.set_password(password)
         empolyee.save(using=self._db)
         return empolyee
     
@@ -63,7 +84,8 @@ class UserManager(BaseUserManager):
             classNumber = classNumber,
             number = number,
         )
-        student.password = make_password(password)
+        # student.password = make_password(password)
+        student.set_password(password)
         student.save(using=self._db)
         return student
 
@@ -79,9 +101,7 @@ class UserManager(BaseUserManager):
     #     user.save(using=self._db)
     #     return user
 
-
-# Create your models here.
-class Empolyee(models.Model):
+class Empolyee(AbstractBaseUser):
     name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
@@ -89,19 +109,34 @@ class Empolyee(models.Model):
     school = models.CharField(max_length=50, unique=True)
     certificate = models.ImageField(upload_to="")
     schoolCode = models.CharField(max_length=50, blank=True, null=True)
-    
-    # # User 모델의 필수 field
-    # is_active = models.BooleanField(default=True)    
-    # is_admin = models.BooleanField(default=False)
 
-    # 헬퍼 클래스 사용
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
     objects = UserManager()
-    
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['name']
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
     def __str__(self):
-        return self.school
+        return self.name
 
+    @property
+    def is_staff(self):
+        return self.is_admin
 
-class Student(models.Model):
+    class Meta:
+        verbose_name = 'Employee'
+        verbose_name_plural = 'Employees'
+
+class Student(AbstractBaseUser):
     name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
@@ -112,8 +147,28 @@ class Student(models.Model):
     number = models.PositiveIntegerField()
     isAllowed = models.BooleanField(default=False)
 
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
     objects = UserManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['name']
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
 
     def __str__(self):
         return self.name
 
+    @property
+    def is_staff(self):
+        return self.is_admin
+
+    class Meta:
+        verbose_name = 'Student'
+        verbose_name_plural = 'Students'
