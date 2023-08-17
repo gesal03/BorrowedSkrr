@@ -1,122 +1,51 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.contrib.auth.hashers import make_password
-import random
-import string
-
-n=10	# 문자의 개수(문자열의 크기)
-rand_str = ""	# 문자열
-
-for i in range(n):
-    rand_str += str(random.choice(string.ascii_letters + string.digits))
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, password=None, **extra_fields):
+    # 일반 user 생성
+    def create_user(self, name, username, password=None):
+        if not name:
+            raise ValueError('must have user email')
         if not username:
-            raise ValueError("The Username field must be set")
-        
-        user = self.model(username=username, **extra_fields)
+            raise ValueError('must have user nickname')
+        if not name:
+            raise ValueError('must have user name')
+        user = self.model(
+            username = username,
+            name = name
+        )
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, password=None, **extra_fields):
-        extra_fields.setdefault('is_admin', True)
-        extra_fields.setdefault('is_superuser', True)
-        
-        if extra_fields.get('is_admin') is not True:
-            raise ValueError("Superuser must have is_admin=True.")
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-        
-        return self.create_user(username, password, **extra_fields)
-
-    # employee 생성
-    def create_empolyee(self, name, username, password=None, password2=None, school=None, certificate=None, classNumber=None, number=None, schoolCode=None):
-        if not name:
-            raise ValueError('must have user name')
-        if not username:
-            raise ValueError('must have user username')
-        if not password2:
-            raise ValueError('must have user password2')
-        if not school:
-            raise ValueError('must have user school')
-        if not certificate:
-            raise ValueError('must have user certificate')
-        empolyee = self.model(
-            name = name,
-            username = username,
+    # 관리자 user 생성
+    def create_superuser(self, name, username, password=None):
+        user = self.create_user(
+            username=username,
             password = password,
-            password2 = password2,
-            school = school,
-            certificate = certificate,
-            schoolCode = rand_str
-
+            name = name
         )
-        # empolyee.password = make_password(password)
-        empolyee.set_password(password)
-        empolyee.save(using=self._db)
-        return empolyee
-    
-    # student 생성
-    def create_student(self, name, username, password=None, password2=None, subscribeCode=None, grade=None, classNumber=None, number=None):
-        if not name:
-            raise ValueError('must have user name')
-        if not username:
-            raise ValueError('must have user username')
-        if not password2:
-            raise ValueError('must have user password2')
-        if not subscribeCode:
-            raise ValueError('must have user subscribeCode')
-        if not grade:
-            raise ValueError('must have user grade')
-        if not classNumber:
-            raise ValueError('must have user classNumber')
-        if not number:
-            raise ValueError('must have user number')
-        student = self.model(
-            name = name,
-            username = username,
-            password = password,
-            password2 = password2,
-            subscribeCode = subscribeCode,
-            grade = grade,
-            classNumber = classNumber,
-            number = number,
-        )
-        # student.password = make_password(password)
-        student.set_password(password)
-        student.save(using=self._db)
-        return student
+        user.is_admin = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
 
-    # # 관리자 user 생성
-    # def create_superuser(self, email, nickname, name, password=None):
-    #     user = self.create_user(
-    #         email,
-    #         password = password,
-    #         nickname = nickname,
-    #         name = name
-    #     )
-    #     user.is_admin = True
-    #     user.save(using=self._db)
-    #     return user
-
-class Empolyee(AbstractBaseUser):
+class User(AbstractBaseUser):
     name = models.CharField(max_length=50)
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
-    password2 = models.CharField(max_length=50, null=True, blank=True)
-    school = models.CharField(max_length=50, unique=True)
-    certificate = models.ImageField(upload_to="")
-    schoolCode = models.CharField(max_length=50, blank=True, null=True)
-
-    is_active = models.BooleanField(default=True)
+    
+    # User 모델의 필수 field
+    is_active = models.BooleanField(default=True)    
     is_admin = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
+    # 헬퍼 클래스 사용
     objects = UserManager()
 
+    # 사용자의 username field는 nickname으로 설정
     USERNAME_FIELD = 'username'
+    # 필수로 작성해야하는 field
     REQUIRED_FIELDS = ['name']
 
     def has_perm(self, perm, obj=None):
@@ -132,43 +61,19 @@ class Empolyee(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
-    class Meta:
-        verbose_name = 'Employee'
-        verbose_name_plural = 'Employees'
-
-class Student(AbstractBaseUser):
-    name = models.CharField(max_length=50)
-    username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
-    password2 = models.CharField(max_length=50, null=True, blank=True)
+    def __str__(self):
+        return self.name
+    
+class Student(models.Model):
+    user=models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     subscribeCode = models.CharField(max_length=50)
     grade = models.PositiveIntegerField()
     classNumber = models.PositiveIntegerField()
     number = models.PositiveIntegerField()
     isAllowed = models.BooleanField(default=False)
 
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
-
-    objects = UserManager()
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['name']
-
-    def has_perm(self, perm, obj=None):
-        return self.is_superuser
-
-    def has_module_perms(self, app_label):
-        return self.is_superuser
-
-    def __str__(self):
-        return self.name
-
-    @property
-    def is_staff(self):
-        return self.is_admin
-
-    class Meta:
-        verbose_name = 'Student'
-        verbose_name_plural = 'Students'
+class Empolyee(models.Model):
+    user=models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    school = models.CharField(max_length=50, unique=True)
+    certificate = models.ImageField(upload_to="")
+    schoolCode = models.CharField(max_length=50, blank=True, null=True)

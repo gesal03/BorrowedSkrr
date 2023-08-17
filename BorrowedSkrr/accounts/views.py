@@ -5,15 +5,19 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.shortcuts import get_object_or_404, render
-from .serializers import LoginSerializer, EmpolyeeSerializer, StudentSerializer, StudentInfoSerializer, EmployeeInfoSerializer
-from .models import Empolyee, Student
+from .serializers import EmpolyeeSerializer, StudentSerializer, StudentInfoSerializer, EmployeeInfoSerializer, UserSerializer,EmployeeUserSerializer
+from .models import Empolyee, Student, User
 from rest_framework import generics, status
 
 
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 # 교직원 회원가입
 class EmpolyeeCreate(generics.CreateAPIView):
-    queryset = Empolyee.objects.all()
-    serializer_class = EmpolyeeSerializer
+    queryset = User.objects.all()
+    serializer_class = EmployeeUserSerializer
 
 # 학생 회원가입
 class StudentCreate(generics.CreateAPIView):
