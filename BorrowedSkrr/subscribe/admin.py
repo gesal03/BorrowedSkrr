@@ -84,5 +84,5 @@ class StudentInfoAdimn(admin.ModelAdmin):
 admin.site.register(StudentInfo, StudentInfoAdimn)
 
 class SubscribeInfoAdmin(admin.ModelAdmin):
-    list_display=('name', 'count', 'start_date', 'end_date', 'price')
+    list_display=('name', 'count', 'start_date', 'end_date', 'price', 'image')
 admin.site.register(SubscribeInfo, SubscribeInfoAdmin)

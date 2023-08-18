@@ -86,3 +86,4 @@ class SubscribeInfo(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     price = models.CharField(max_length=100)
+    image = models.CharField(max_length=100, null=True, blank=True)
