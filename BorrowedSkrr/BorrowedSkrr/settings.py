@@ -42,22 +42,16 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
 
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
 CORS_ORIGIN_WHITELIST = ( 'https://localhost:3000')
 CORS_ALLOWED_ORIGINS = ["http://localhost:3080", "http://localhost:8080"]
-CORS_ALLOW_ORIGIN = ['http://localhost:3000']  # 리스트 형태로 설정
 CSRF_TRUSTED_ORIGINS = ['https://localhost:3000']
 
-CSRF_COOKIE_SECURE = False  # 개발 환경에서는 False로 설정
-SESSION_COOKIE_SECURE = False  # 개발 환경에서는 False로 설정
-CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True  # 개발 환경에서는 False로 설정
+SESSION_COOKIE_SECURE = True  # 개발 환경에서는 False로 설정
+CORS_ALLOW_ORIGIN = ['http://localhost:3000']  # 허용할 origin을 설정합니다.
+CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']  # 허용할 HTTP 메서드를 설정합니다.
+CORS_ALLOW_HEADERS = ['Content-Type']  # 허용할 요청 헤더를 설정합니다.
+CORS_ALLOW_CREDENTIALS = True  # 자격 증명 모드를 허용합니다.
 
 
 MIDDLEWARE = [
