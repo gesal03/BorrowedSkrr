@@ -44,13 +44,13 @@ class SubscribeAdmin(admin.ModelAdmin):
 admin.site.register(Subscribe, SubscribeAdmin)
 
 class ManagementAdmin(admin.ModelAdmin):
-    list_display = ('get_EmpolyeeSchool', 'get_studentName', 'requestDate')
+    list_display = ('empolyee_id', 'student_id', 'requestDate')
 
     def get_EmpolyeeSchool(self, obj):
         return obj.empolyee_id.school
     
     def get_studentName(self, obj):
-        return obj.student_id.name
+        return obj.student_id
     
 admin.site.register(Management, ManagementAdmin)
 

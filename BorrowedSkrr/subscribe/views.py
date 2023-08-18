@@ -12,7 +12,7 @@ from rest_framework.response import Response
 class ProductListAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         categoryName = request.GET['category']
@@ -86,7 +86,7 @@ class SubscribeUpdateAPIView(generics.UpdateAPIView, generics.ListAPIView):
     
     # # 장바구니 목록 보여주기
     def get_queryset(self):
-        queryset = Subscribe.objects.filter(empolyee_id=self.request.user.id, isAllowed=False)
+        queryset = Subscribe.objects.filter(empolyee_id=self.request.user.empolyee.id, isAllowed=False)
         return queryset
 
 
@@ -95,8 +95,8 @@ class SubscribeUpdateAPIView(generics.UpdateAPIView, generics.ListAPIView):
 class MyPageListAPIView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
 
-        managementList = Management.objects.filter(empolyee_id = self.request.user.id, isAllowed=False)
-        reservationList = Reservation.objects.filter(empolyee_id = self.request.user.id)
+        managementList = Management.objects.filter(empolyee_id = self.request.user.empolyee.id, isAllowed=False)
+        reservationList = Reservation.objects.filter(empolyee_id = self.request.user.empolyee.id)
 
         managementSerializer = ManagementSerializer(managementList, many=True)
         reservationSerializer = ReservationSerializer(reservationList, many=True)
@@ -113,7 +113,7 @@ class EmpolyeeWishListAPIView(generics.ListAPIView):
     serializer_class = ProductSerializer
 
     def get_queryset(self):
-        wishListQueryset = EmpolyeeWishList.objects.filter(empolyee_id = self.request.user.id)
+        wishListQueryset = EmpolyeeWishList.objects.filter(empolyee_id = self.request.user.empolyee.id)
         queryset=[]
         for item in wishListQueryset:
             obj = get_object_or_404(Product, id=item.product_id.id)
@@ -125,7 +125,7 @@ class AllowedSubscribeListAPIView(generics.ListAPIView):
     serializer_class = SubscribeSerializer
 
     def get_queryset(self):
-        queryset = Subscribe.objects.filter(empolyee_id=self.request.user.id, isAllowed=True)
+        queryset = Subscribe.objects.filter(empolyee_id=self.request.user.empolyee.id, isAllowed=True)
         return queryset
 
 # 학교 학생 관리(허가 및 삭제)
@@ -162,9 +162,9 @@ class StudentSubscribeListAPIView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         # 테스트용
-        user_id = 1
+        # user_id = 1
         # 실제 구현 시 이용
-        # user_id = self.request.user.id
+        user_id = self.request.user.student.id
         management = Management.objects.filter(student_id = user_id)
         employee_ids = management.values_list('empolyee_id', flat=True)  # Get employee_ids from Management
 
@@ -200,7 +200,7 @@ class SubscribeRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         instance = self.get_object()  # Get the instance you want to update
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         instance.likes += 1
-        StudentWishList(student_id=self.request.user.id, subscribe_id=instance)
+        StudentWishList(student_id=self.request.user.student.id, subscribe_id=instance)
 
         if serializer.is_valid():
             serializer.save()  # Save the updated instance
@@ -228,7 +228,7 @@ class StudentWishListAPIView(generics.ListAPIView):
     serializer_class = SubscribeSerializer
 
     def get_queryset(self):
-        wishListQueryset = StudentWishList.objects.filter(student_id = self.request.user.id)
+        wishListQueryset = StudentWishList.objects.filter(student_id = self.request.user.student.id)
         queryset=[]
         for item in wishListQueryset:
             obj = get_object_or_404(Subscribe, id=item.subscribe_id.id)
@@ -239,5 +239,5 @@ class ReservationListAPIView(generics.ListAPIView):
     serializer_class = ReservationSerializer
 
     def get_queryset(self):
-        queryset = Reservation.objects.filter(student_id=self.request.user.id)
+        queryset = Reservation.objects.filter(student_id=self.request.user.student.id)
         return queryset

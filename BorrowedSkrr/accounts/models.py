@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
             raise ValueError('must have user name')
         user = self.model(
             username = username,
-            name = name
+            name = name,
         )
         user.set_password(password)
         user.save(using=self._db)
