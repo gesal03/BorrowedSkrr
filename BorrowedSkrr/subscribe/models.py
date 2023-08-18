@@ -79,3 +79,10 @@ class StudentInfo(models.Model):
     belong = models.CharField(max_length=100)
     date = models.DateField()
     state = models.BooleanField(default=False)
+
+class SubscribeInfo(models.Model):
+    name = models.CharField(max_length=50)
+    count = models.PositiveIntegerField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    price = models.CharField(max_length=100)

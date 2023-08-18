@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from .models import Product, Shopping, Subscribe, EmpolyeeWishList, Management, Reservation, StudentWishList, StudentInfo
+from .models import Product, Shopping, Subscribe, EmpolyeeWishList, Management, Reservation, StudentWishList, StudentInfo, SubscribeInfo
 from accounts.models import Student
-from .serializers import ProductSerializer, SubscribeSerializer, ManagementSerializer, ReservationSerializer, EmpolyeeWishListSerializer, StudentInfoSerailizer
+from .serializers import ProductSerializer, SubscribeSerializer, ManagementSerializer, ReservationSerializer, EmpolyeeWishListSerializer, StudentInfoSerailizer, SubscribeInfoSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -261,3 +261,7 @@ class ProductListsAPIView(generics.ListAPIView):
 class StudentInfoListAPIView(generics.ListAPIView):
     queryset= StudentInfo.objects.all()
     serializer_class = StudentInfoSerailizer
+
+class SubscribeInfoListAPIView(generics.ListAPIView):
+    queryset = SubscribeInfo.objects.all()
+    serializer_class = SubscribeInfoSerializer
