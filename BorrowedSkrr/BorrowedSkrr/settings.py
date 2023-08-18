@@ -61,7 +61,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 MIDDLEWARE = [
-    # 'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
+    'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
     # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
