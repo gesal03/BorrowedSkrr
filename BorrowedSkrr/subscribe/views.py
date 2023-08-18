@@ -253,3 +253,7 @@ class ReservationListAPIView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Reservation.objects.filter(student_id=self.request.user.student.id)
         return queryset
+    
+class ProductListAPIView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
