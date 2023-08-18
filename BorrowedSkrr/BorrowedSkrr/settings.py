@@ -21,6 +21,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,7 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'corsheaders',
     'accounts',
     'subscribe',
     'drf_yasg',
@@ -51,7 +51,7 @@ CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
 # CORS_ALLOWED_ORIGIN =  ['https://localhost:3000']
 # CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
 # CORS_ALLOWED_ORIGIN= ['*']
-CORS_ALLOW_CREDENTIALS = False
+# CORS_ALLOW_CREDENTIALS = False
 
 ROOT_URLCONF = 'BorrowedSkrr.urls'
 
