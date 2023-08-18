@@ -92,21 +92,33 @@ class SubscribeUpdateAPIView(generics.UpdateAPIView, generics.ListAPIView):
 
 # 마이페이지 메인 화면
 # 교사 정보 포함 해야됨 - 서영이 코드 받아서 넣기!
-class MyPageListAPIView(generics.ListAPIView):
-    def get(self, request, *args, **kwargs):
+class MyPageManagementListListAPIView(generics.ListAPIView):
+    serializer_class = ManagementSerializer
+    def get_queryset(self):
+        queryset = Management.objects.filter(empolyee_id = self.request.user.empolyee, isAllowed=False)
+        return queryset
+    # def get(self, request, *args, **kwargs):
+    #     print(self.request.user.empolyee)
+    #     managementList = Management.objects.filter(empolyee_id = self.request.user.empolyee, isAllowed=False)
+    #     print(managementList)
+    #     reservationList = Reservation.objects.filter(empolyee_id = self.request.user.empolyee.id)
 
-        managementList = Management.objects.filter(empolyee_id = self.request.user.empolyee.id, isAllowed=False)
-        reservationList = Reservation.objects.filter(empolyee_id = self.request.user.empolyee.id)
+    #     managementSerializer = ManagementSerializer(managementList, many=True)
+    #     reservationSerializer = ReservationSerializer(reservationList, many=True)
 
-        managementSerializer = ManagementSerializer(managementList, many=True)
-        reservationSerializer = ReservationSerializer(reservationList, many=True)
+    #     content = {
+    #         "management": managementSerializer.data,
+    #         "reservation": reservationSerializer.data
+    #     }
 
-        content = {
-            "management": managementSerializer.data,
-            "reservation": reservationSerializer.data
-        }
+    #     return Response(content)
+    
+class MyPageReservationListAPIView(generics.ListAPIView):
+    serializer_class = ReservationSerializer
 
-        return Response(content)
+    def get_queryset(self):
+        queryset = Reservation.objects.filter(empolyee_id = self.request.user.empolyee)
+        return queryset
 
 # 학교 위시 리스트 출력
 class EmpolyeeWishListAPIView(generics.ListAPIView):

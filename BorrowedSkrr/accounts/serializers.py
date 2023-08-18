@@ -19,7 +19,9 @@ class EmpolyeeSerializer(serializers.ModelSerializer):
         fields = ('school', 'certificate')
 
 class StudentSerializer(serializers.ModelSerializer):
-    pass
+    class Meta:
+        model = Student
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

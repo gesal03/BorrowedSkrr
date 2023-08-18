@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from subscribe.views import ProductListAPIView, ProductRetrieveUpdateAPIView, SubscribeCreateAPIView,SubscribeUpdateAPIView,MyPageListAPIView, EmpolyeeWishListAPIView,AllowedSubscribeListAPIView, manageStudentAPIView, StudentSubscribeListAPIView, SubscribeRetrieveUpdateAPIView, ReservationCreateAPIView, StudentWishListAPIView, ReservationListAPIView
+from subscribe.views import ProductListAPIView, ProductRetrieveUpdateAPIView, SubscribeCreateAPIView,SubscribeUpdateAPIView,MyPageManagementListListAPIView, MyPageReservationListAPIView, EmpolyeeWishListAPIView,AllowedSubscribeListAPIView, manageStudentAPIView, StudentSubscribeListAPIView, SubscribeRetrieveUpdateAPIView, ReservationCreateAPIView, StudentWishListAPIView, ReservationListAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,7 +13,8 @@ urlpatterns = [
     # 결제할 상품 List, 결제
     path('subscribe', SubscribeUpdateAPIView.as_view()),
     # 학교 마이페이지 - 메인
-    path('schoolMypage/', MyPageListAPIView.as_view()),
+    path('schoolMypageManagement/', MyPageManagementListListAPIView.as_view()),
+    path('schoolMypageReservation/', MyPageReservationListAPIView.as_view()),
     # 학교 마이페이지 - 학생 허가 및 삭제
     path('schoolMypage/manageStudent/<int:pk>', manageStudentAPIView.as_view()),
     # 학교 마이페이지 - 관심 제품
