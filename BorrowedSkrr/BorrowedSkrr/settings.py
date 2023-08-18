@@ -37,17 +37,15 @@ INSTALLED_APPS = [
 
 CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
 
-CORS_ORIGIN_WHITELIST = ( 'https://localhost:3000', 'http://192.168.165.145:3000')
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://localhost:8080", "http://192.168.165.145:3000"]
-CSRF_TRUSTED_ORIGINS = ['https://localhost:3000', 'http://192.168.165.145:3000']
-CORS_ALLOW_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']  # 허용할 HTTP 메서드를 설정합니다.
-CORS_ALLOW_HEADERS = ['Content-Type']  # 허용할 요청 헤더를 설정합니다.
+# CORS_ALLOWED_ORIGIN =  ['https://localhost:3000']
+CORS_ALLOWED_ORIGIN= ['*']
+CORS_ALLOW_CREDENTIALS = True
 
 
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
-    'django.middleware.security.SecurityMiddleware',
+    # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
