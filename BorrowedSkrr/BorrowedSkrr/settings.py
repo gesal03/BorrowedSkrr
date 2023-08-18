@@ -16,12 +16,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-	),
-}
+
 
 # Application definition
 
@@ -52,7 +47,7 @@ CORS_ALLOW_HEADERS = ['Content-Type']  # 허용할 요청 헤더를 설정합니
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
-    # 'django.middleware.security.SecurityMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
