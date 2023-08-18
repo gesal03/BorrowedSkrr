@@ -48,9 +48,11 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
 CORS_ORIGIN_WHITELIST = [
+        'https://borrowedskrr.github.io',
         'http://49.50.163.177:8000',
         'http://127.0.0.1:3000',
         'http://localhost:3000',
+        # 'https://borrowedskrr.github.io/FE-BorrowedSkrr',
 ]
 # CORS_ALLOWED_ORIGIN =  ['https://localhost:3000']
 # CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
