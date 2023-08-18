@@ -73,3 +73,9 @@ class Reservation(models.Model):
 class StudentWishList(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     subscribe_id = models.ForeignKey(Subscribe, on_delete=models.CASCADE)
+
+class StudentInfo(models.Model):
+    name = models.CharField(max_length=100)
+    belong = models.CharField(max_length=100)
+    date = models.DateField()
+    state = models.BooleanField(default=False)

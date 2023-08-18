@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from .models import Product, Shopping, Subscribe, EmpolyeeWishList, Management, Reservation, StudentWishList
+from .models import Product, Shopping, Subscribe, EmpolyeeWishList, Management, Reservation, StudentWishList, StudentInfo
 from accounts.models import Student
-from .serializers import ProductSerializer, SubscribeSerializer, ManagementSerializer, ReservationSerializer, EmpolyeeWishListSerializer
+from .serializers import ProductSerializer, SubscribeSerializer, ManagementSerializer, ReservationSerializer, EmpolyeeWishListSerializer, StudentInfoSerailizer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -254,6 +254,10 @@ class ReservationListAPIView(generics.ListAPIView):
         queryset = Reservation.objects.filter(student_id=self.request.user.student.id)
         return queryset
     
-class ProductListAPIView(generics.ListAPIView):
+class ProductListsAPIView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+class StudentInfoListAPIView(generics.ListAPIView):
+    queryset= StudentInfo.objects.all()
+    serializer_class = StudentInfoSerailizer

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import EmpolyeeWishList, Shopping, Subscribe, Product, Management, Reservation, StudentWishList
+from .models import EmpolyeeWishList, Shopping, Subscribe, Product, Management, Reservation, StudentWishList, StudentInfo
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
@@ -78,3 +78,7 @@ class StudentWishListAdmin(admin.ModelAdmin):
         return obj.subscribe_id.product_id.name
     
 admin.site.register(StudentWishList, StudentWishListAdmin)
+
+class StudentInfoAdimn(admin.ModelAdmin):
+    list_display =('name', 'belong', 'date', 'state')
+admin.site.register(StudentInfo, StudentInfoAdimn)
