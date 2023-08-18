@@ -16,6 +16,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+	),
+}
 
 # Application definition
 
@@ -44,15 +50,22 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+CORS_ORIGIN_WHITELIST = ( 'https://localhost:3000')
+CORS_ALLOWED_ORIGINS = ["http://localhost:3080", "http://localhost:8080"]
+CORS_ALLOW_ORIGIN = ['http://localhost:3000']  # 리스트 형태로 설정
 CSRF_TRUSTED_ORIGINS = ['https://localhost:3000']
 
+CSRF_COOKIE_SECURE = False  # 개발 환경에서는 False로 설정
+SESSION_COOKIE_SECURE = False  # 개발 환경에서는 False로 설정
+CORS_ALLOW_CREDENTIALS = True
+
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
-    'django.middleware.common.CommonMiddleware', 
-    'django.middleware.security.SecurityMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
+    # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
