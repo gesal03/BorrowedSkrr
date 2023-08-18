@@ -16,7 +16,7 @@ class Product(models.Model):
     priceWeek = models.PositiveIntegerField(default=0)
     priceMonth = models.PositiveIntegerField(default=0)
     likes = models.PositiveIntegerField(default=0)
-    image = models.CharField(max_length=100)
+    image = models.CharField(max_length=100, null=True, blank=True)
     category = models.CharField(max_length=30, choices=CATEGROY_CHOICES, default="1")
     
 
