@@ -44,6 +44,8 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
+CSRF_TRUSTED_ORIGINS = ['https://localhost:3000']
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
     'django.middleware.common.CommonMiddleware', 
