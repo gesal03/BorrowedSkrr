@@ -22,6 +22,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'corsheaders',
+    'sslserver',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,6 +55,37 @@ CORS_ORIGIN_WHITELIST = [
         'http://localhost:3000',
         # 'https://borrowedskrr.github.io/FE-BorrowedSkrr',
 ]
+
+CSRF_TRUSTED_ORIGINS = (
+    'https://borrowedskrr.github.io',
+    'http://127.0.0.1:3000',
+    'http://localhost:3000',
+)
+
+CORS_ALLOW_HEADERS = (
+    'access-control-allow-credentials',
+    'access-control-allow-origin',
+    'access-control-request-method',
+    'access-control-request-headers',
+    'accept',
+    'accept-encoding',
+    'accept-language',
+    'authorization',
+    'connection',
+    'content-type',
+    'dnt',
+    'credentials',
+    'host',
+    'origin',
+    'user-agent',
+    'X-CSRFToken',
+    'csrftoken',
+    'x-requested-with',
+)
+
+CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+CSRF_HEADER_NAME = 'X-XSRF-TOKEN'
+
 # CORS_ALLOWED_ORIGIN =  ['https://localhost:3000']
 # CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
 # CORS_ALLOWED_ORIGIN= ['*']
