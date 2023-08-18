@@ -35,16 +35,6 @@ INSTALLED_APPS = [
     'drf_yasg2',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
-
-# CORS_ALLOWED_ORIGIN =  ['https://localhost:3000']
-CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
-CORS_ALLOWED_ORIGIN= ['*']
-CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = False
-
-
-
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # <- 가능한 높게 위치시켜야 한다.
     # 'django.middleware.security.SecurityMiddleware',
@@ -55,6 +45,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True # <- 모든 호스트 허용
+
+# CORS_ALLOWED_ORIGIN =  ['https://localhost:3000']
+# CORS_ORIGIN_WHITELIST = ['https://localhost:3000']
+# CORS_ALLOWED_ORIGIN= ['*']
+CORS_ALLOW_CREDENTIALS = False
 
 ROOT_URLCONF = 'BorrowedSkrr.urls'
 
