@@ -7,7 +7,7 @@
 <br>
 
 ### ERD
-<img width="881" alt="image" src="https://github.com/gesal03/BorrowedSkrr/assets/77336664/9597645f-624a-494c-8cca-2d07d1c19474">
+![빌렸Skrr](https://github.com/gesal03/BorrowedSkrr/assets/77336664/7374b76c-d782-4953-b072-a9672522811c)
 <br>
 
 ### 관련 이미지
